@@ -21,3 +21,22 @@ func TestRandString(t *testing.T) {
 	}
 	t.Log("生成的字符串为：", str)
 }
+
+func TestMidnight(t *testing.T) {
+	After11, err := GetMidnightTimer(11)
+	if err != nil {
+		t.Error(err)
+	}
+	Before4, err := GetMidnightTimer(-4)
+	if err != nil {
+		t.Error(err)
+	}
+	Today, err := GetMidnightTimer(0)
+	if err != nil {
+		t.Error(err)
+	}
+	t.Log(" After11 midnight = ", time.Unix(After11, 0),
+		"\n Before4 midnight = ", time.Unix(Before4, 0),
+		"\n Today midnight = ", time.Unix(Today, 0),
+		"\n now = ", time.Now())
+}

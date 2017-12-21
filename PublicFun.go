@@ -1,7 +1,9 @@
 package PublicFun
 
 import (
+	"fmt"
 	"math/rand"
+	"time"
 )
 
 //公共函数
@@ -27,4 +29,23 @@ func CreateRandAsciiString(scope []byte, length int) string {
 	}
 
 	return string(out)
+}
+
+/******************************************************************
+函数作用：返回东八区（即北京时间）明天的0点0分0秒时的UNIX时间戳
+参数说明：days：表示多少天，例如-3表示3天前的午夜 9表示9天后的午夜
+
+例子：见PublicFun_test.go
+******************************************************************/
+func GetMidnightTimer(days int) (int64, error) {
+	now := time.Now()
+	tomorrow := now.Add(time.Duration(days*24) * time.Hour) //加一天
+	//明天的午夜时间
+	strMidnight := fmt.Sprintf("%04d-%02d-%02dT00:00:00+08:00", tomorrow.Year(), tomorrow.Month(), tomorrow.Day()) //+08:00表示东八区
+	t1, err := time.Parse(time.RFC3339, strMidnight)
+	if err != nil {
+		fmt.Println("午夜日期转换出错:", err)
+		return 0, err
+	}
+	return t1.Unix(), nil
 }
