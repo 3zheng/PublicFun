@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math/rand"
 	"time"
+	"unsafe"
 )
 
 //公共函数
@@ -48,4 +49,24 @@ func GetMidnightTimer(days int) (int64, error) {
 		return 0, err
 	}
 	return t1.Unix(), nil
+}
+
+/******************************************************************
+函数作用：打印内存块的值
+参数说明：ptr	内存起始地址
+		lenghth	内存块大小
+
+例子：见PublicFun_test.go(待补充)
+******************************************************************/
+func DumpHex(ptr unsafe.Pointer, length uintptr) {
+	p := uintptr(ptr)
+	fmt.Printf("0x%08x:", p)
+	var i, offset uintptr
+	for i = 0; i < length; i += 16 {
+		for offset = i; offset < length && offset < i+16; offset++ {
+			b := *((*byte)(unsafe.Pointer(p + offset)))
+			fmt.Printf(" %02x", b)
+		}
+	}
+	fmt.Println()
 }
